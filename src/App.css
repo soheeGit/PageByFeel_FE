@@ -1,0 +1,224 @@
+/* 메인 앱 컨테이너 */
+.app {
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--background-color);
+  display: flex;
+  flex-direction: column;
+}
+
+/* 헤더 스타일 */
+.header {
+  background-color: var(--surface-color);
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--shadow);
+}
+
+.header h1 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-align: center;
+  margin: 0;
+}
+
+/* 메인 콘텐츠 영역 */
+.main-content {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+}
+
+/* 카드 스타일 */
+.card {
+  background-color: var(--surface-color);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border-color);
+}
+
+.card:last-child {
+  margin-bottom: 0;
+}
+
+/* 리스트 아이템 */
+.list-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  background-color: var(--surface-color);
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color 0.2s ease;
+}
+
+.list-item:hover {
+  background-color: var(--background-color);
+}
+
+.list-item:active {
+  background-color: var(--border-color);
+}
+
+.list-item:last-child {
+  border-bottom: none;
+}
+
+/* 아이콘 */
+.icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 12px;
+  color: var(--primary-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 텍스트 스타일 */
+.text-primary {
+  color: var(--text-primary);
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.text-secondary {
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.text-small {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+/* 버튼 스타일 */
+.btn-primary {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 500;
+  text-align: center;
+  width: 100%;
+  margin: 8px 0;
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 500;
+  text-align: center;
+  width: 100%;
+  margin: 8px 0;
+}
+
+/* 입력 필드 */
+.input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--surface-color);
+  color: var(--text-primary);
+  font-size: 16px;
+  margin: 8px 0;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+/* 네비게이션 바 (하단) */
+.bottom-nav {
+  background-color: var(--surface-color);
+  border-top: 1px solid var(--border-color);
+  padding: 8px 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  position: sticky;
+  bottom: 0;
+  z-index: 100;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 12px;
+  color: var(--text-secondary);
+  transition: color 0.2s ease;
+  min-width: 44px;
+}
+
+.nav-item.active {
+  color: var(--primary-color);
+}
+
+.nav-item .icon {
+  margin: 0 0 4px 0;
+  font-size: 20px;
+}
+
+.nav-item .label {
+  font-size: 10px;
+  font-weight: 500;
+}
+
+/* 로딩 스피너 */
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--border-color);
+  border-top: 2px solid var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* 모바일 최적화 */
+@media (max-width: 480px) {
+  .main-content {
+    padding: 12px;
+  }
+  
+  .card {
+    padding: 12px;
+    margin-bottom: 8px;
+  }
+  
+  .header {
+    padding: 10px 16px;
+  }
+}
+
+/* 태블릿 최적화 */
+@media (min-width: 768px) {
+  .app {
+    max-width: 480px;
+    margin: 0 auto;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  }
+}
