@@ -1,6 +1,4 @@
 import React from 'react';
-import { formatDate } from '../utils/dateUtils';
-import { emotions } from '../data/emotions';
 import EmotionChart from '../components/EmotionChart';
 import EmotionSelector from '../components/EmotionSelector';
 

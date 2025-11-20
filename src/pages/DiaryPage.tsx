@@ -1,5 +1,4 @@
 import React from 'react';
-import { formatDate } from '../utils/dateUtils';
 
 const DiaryPage: React.FC = () => {
   return (

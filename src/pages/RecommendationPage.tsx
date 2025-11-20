@@ -1,5 +1,4 @@
 import React from 'react';
-import { formatDate } from '../utils/dateUtils';
 
 const RecommendationPage: React.FC = () => {
   return (
