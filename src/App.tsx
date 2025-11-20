@@ -6,11 +6,18 @@ import EmotionDiaryPage from './pages/EmotionDiaryPage';
 import RecommendationPage from './pages/RecommendationPage';
 import DiaryPage from './pages/DiaryPage';
 import SettingsPage from './pages/SettingsPage';
+import LoginPage from './pages/LoginPage';
 
 const App: React.FC = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [selectedMenu, setSelectedMenu] = useState('홈');
   const [bookmarkInput, setBookmarkInput] = useState('');
   const [selectedEmotion, setSelectedEmotion] = useState<string | null>(null);
+
+  // 로그인하지 않은 경우 로그인 페이지 표시
+  if (!isLoggedIn) {
+    return <LoginPage />;
+  }
 
   const renderContent = () => {
     switch (selectedMenu) {
