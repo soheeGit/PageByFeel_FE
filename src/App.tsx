@@ -38,14 +38,17 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-800 font-sans">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       <Navigation 
         selectedMenu={selectedMenu} 
         setSelectedMenu={setSelectedMenu} 
       />
       
-      <div className="pt-16 max-w-7xl mx-auto px-4 py-8">
-        {renderContent()}
+      {/* 메인 컨텐츠 영역 */}
+      <div className="pt-24 pb-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          {renderContent()}
+        </div>
       </div>
     </div>
   );

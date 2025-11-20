@@ -28,33 +28,31 @@ const BookmarkPage: React.FC = () => {
 
   return (
     <div>
-      <header className="mb-8">
-        <div className="flex justify-between items-center">
-          <div>
-            <h2 className="text-2xl font-bold">문장 보관함</h2>
-            <p className="text-gray-500">{formatDate()}</p>
+      <div className="flex justify-between items-center mb-8">
+        <p className="text-gray-500 flex items-center gap-2">
+          <i className="fas fa-calendar-alt"></i>
+          <span>{formatDate()}</span>
+        </p>
+        <div className="flex items-center space-x-4">
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="문장 검색..."
+              className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            />
+            <i className="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
           </div>
-          <div className="flex items-center space-x-4">
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="문장 검색..."
-                className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              />
-              <i className="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-            </div>
-            <select className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-              <option value="">모든 감정</option>
-              <option value="happy">행복</option>
-              <option value="comfort">위로</option>
-              <option value="excited">흥분</option>
-              <option value="sad">슬픔</option>
-              <option value="bored">지루함</option>
-              <option value="inspired">영감</option>
-            </select>
-          </div>
+          <select className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            <option value="">모든 감정</option>
+            <option value="happy">행복</option>
+            <option value="comfort">위로</option>
+            <option value="excited">흥분</option>
+            <option value="sad">슬픔</option>
+            <option value="bored">지루함</option>
+            <option value="inspired">영감</option>
+          </select>
         </div>
-      </header>
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {/* 문장 카드 */}
         {bookmarkSentences.map((item, index) => (
