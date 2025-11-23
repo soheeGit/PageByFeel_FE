@@ -4,9 +4,10 @@ import { menuItems } from '../data/menuItems';
 interface NavigationProps {
   selectedMenu: string;
   setSelectedMenu: (menu: string) => void;
+  onLogout?: () => void;
 }
 
-const Navigation: React.FC<NavigationProps> = ({ selectedMenu, setSelectedMenu }) => {
+const Navigation: React.FC<NavigationProps> = ({ selectedMenu, setSelectedMenu, onLogout }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
@@ -39,6 +40,17 @@ const Navigation: React.FC<NavigationProps> = ({ selectedMenu, setSelectedMenu }
                 <span>{item.id}</span>
               </button>
             ))}
+            
+            {/* 로그아웃 버튼 */}
+            {onLogout && (
+              <button
+                onClick={onLogout}
+                className="px-5 py-2.5 rounded-xl font-medium transition-all duration-200 inline-flex items-center gap-2 text-red-600 hover:bg-red-50"
+              >
+                <i className="fas fa-sign-out-alt text-sm"></i>
+                <span>로그아웃</span>
+              </button>
+            )}
           </div>
           
           {/* 모바일 메뉴 버튼 */}
@@ -72,6 +84,20 @@ const Navigation: React.FC<NavigationProps> = ({ selectedMenu, setSelectedMenu }
                 <span>{item.id}</span>
               </button>
             ))}
+            
+            {/* 모바일 로그아웃 버튼 */}
+            {onLogout && (
+              <button
+                onClick={() => {
+                  onLogout();
+                  setIsMobileMenuOpen(false);
+                }}
+                className="w-full px-5 py-3 rounded-xl font-medium transition-all duration-200 flex items-center gap-3 text-red-600 hover:bg-red-50"
+              >
+                <i className="fas fa-sign-out-alt text-base"></i>
+                <span>로그아웃</span>
+              </button>
+            )}
           </div>
         </div>
       )}
