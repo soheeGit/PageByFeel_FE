@@ -19,14 +19,15 @@ const App: React.FC = () => {
 
   const checkLoginStatus = async () => {
     try {
-      const response = await fetch(`${API_URL}/auth/me`, {
-        credentials: 'include', // 쿠키 포함
+      const response = await fetch(`${API_URL}/api/auth/me`, {
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },
       });
 
       if (response.ok) {
+        await response.json();
         setIsLoggedIn(true);
       } else {
         setIsLoggedIn(false);
@@ -39,23 +40,13 @@ const App: React.FC = () => {
     }
   };
 
-  // 초기 로그인 상태 확인
   useEffect(() => {
     checkLoginStatus();
   }, []);
 
-  // 주기적으로 로그인 상태 확인 (선택적)
-  useEffect(() => {
-    const interval = setInterval(() => {
-      checkLoginStatus();
-    }, 60000); // 1분마다 체크
-
-    return () => clearInterval(interval);
-  }, []);
-
   const handleLogout = async () => {
     try {
-      await fetch(`${API_URL}/auth/logout`, {
+      const response = await fetch(`${API_URL}/api/auth/logout`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -63,12 +54,27 @@ const App: React.FC = () => {
         },
       });
       
-      setIsLoggedIn(false);
-      setSelectedMenu('홈');
+      await response.text();
     } catch (error) {
       console.error(error);
+    } finally {
       setIsLoggedIn(false);
       setSelectedMenu('홈');
+      
+      const cookies = document.cookie.split(";");
+
+      cookies.forEach((c) => {
+        const cookieName = c.split("=")[0].trim();
+        document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+        document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${window.location.hostname}`;
+      });
+      
+      sessionStorage.clear();
+      localStorage.clear();
+      
+      setTimeout(() => {
+        window.location.reload();
+      }, 100);
     }
   };
 
