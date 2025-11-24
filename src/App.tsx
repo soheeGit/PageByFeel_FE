@@ -134,6 +134,7 @@ const App: React.FC = () => {
         selectedMenu={selectedMenu} 
         setSelectedMenu={setSelectedMenu}
         onLogout={handleLogout}
+        userProfile={userProfile}
       />
       
       {/* 메인 컨텐츠 영역 */}

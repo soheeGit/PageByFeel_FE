@@ -13,45 +13,32 @@ interface HomePageProps {
     profileImage: string;
   } | null;
 }
-
-interface UserProfile {
-  nickname: string;
-  email: string;
-  profileImage: string;
-}
-
 const HomePage: React.FC<HomePageProps> = ({
   bookmarkInput,
   setBookmarkInput,
   selectedEmotion,
   setSelectedEmotion,
-  userProfile
 }) => {
 
   return (
     <div className="space-y-8">
-      {/* 사용자 프로필 헤더 */}
-      <div className="bg-[#FADA7A] rounded-2xl shadow-sm p-6 sm:p-8">
-        <div className="flex flex-col sm:flex-row items-center gap-6">
-          {/* 사용자 정보 */}
-          <div className="flex-1 text-center sm:text-left">
-            <h2 className="text-2xl font-bold text-gray-900 mb-1">
-              {userProfile?.nickname}님, 환영합니다! 👋
-            </h2>
-            <p className="text-gray-700">{userProfile?.email || ''}</p>
-          </div>
-
-          {/* 간단한 통계 */}
-          <div className="flex gap-4">
-            <div className="bg-white rounded-xl px-6 py-4 text-center shadow-md">
-              <p className="text-sm text-gray-600 mb-1">총 독서일</p>
-              <p className="text-2xl font-bold text-[#F0A04B]">7일</p>
-            </div>
-            <div className="bg-white rounded-xl px-6 py-4 text-center shadow-md">
-              <p className="text-sm text-gray-600 mb-1">완독한 책</p>
-              <p className="text-2xl font-bold text-[#B1C29E]">2권</p>
-            </div>
-          </div>
+      {/* 간단한 통계 카드 */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div className="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+          <p className="text-xs text-gray-500 mb-1">총 독서일</p>
+          <p className="text-2xl font-bold text-[#F0A04B]">7일</p>
+        </div>
+        <div className="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+          <p className="text-xs text-gray-500 mb-1">완독한 책</p>
+          <p className="text-2xl font-bold text-[#B1C29E]">2권</p>
+        </div>
+        <div className="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+          <p className="text-xs text-gray-500 mb-1">이번 주</p>
+          <p className="text-2xl font-bold text-[#FADA7A]">7페이지</p>
+        </div>
+        <div className="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+          <p className="text-xs text-gray-500 mb-1">연속 독서</p>
+          <p className="text-2xl font-bold text-gray-900">3일</p>
         </div>
       </div>
       
