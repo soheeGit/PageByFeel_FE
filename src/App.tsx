@@ -14,6 +14,7 @@ const App: React.FC = () => {
   const [selectedMenu, setSelectedMenu] = useState('홈');
   const [bookmarkInput, setBookmarkInput] = useState('');
   const [selectedEmotion, setSelectedEmotion] = useState<string | null>(null);
+  const [userProfile, setUserProfile] = useState<any>(null);
 
   const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 
@@ -27,8 +28,15 @@ const App: React.FC = () => {
       });
 
       if (response.ok) {
-        await response.json();
-        setIsLoggedIn(true);
+        const result = await response.json();
+        if (result.success && result.data) {
+          setUserProfile({
+            nickname: result.data.nickname,
+            email: result.data.email,
+            profileImage: result.data.profileImage || 'https://via.placeholder.com/80'
+          });
+          setIsLoggedIn(true);
+        }
       } else {
         setIsLoggedIn(false);
       }
@@ -114,6 +122,7 @@ const App: React.FC = () => {
             setBookmarkInput={setBookmarkInput}
             selectedEmotion={selectedEmotion}
             setSelectedEmotion={setSelectedEmotion}
+            userProfile={userProfile}
           />
         );
     }

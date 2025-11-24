@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import EmotionChart from '../components/EmotionChart';
 import EmotionSelector from '../components/EmotionSelector';
 
@@ -7,6 +7,11 @@ interface HomePageProps {
   setBookmarkInput: (input: string) => void;
   selectedEmotion: string | null;
   setSelectedEmotion: (emotion: string) => void;
+  userProfile: {
+    nickname: string;
+    email: string;
+    profileImage: string;
+  } | null;
 }
 
 interface UserProfile {
@@ -19,42 +24,9 @@ const HomePage: React.FC<HomePageProps> = ({
   bookmarkInput,
   setBookmarkInput,
   selectedEmotion,
-  setSelectedEmotion
+  setSelectedEmotion,
+  userProfile
 }) => {
-  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    // 사용자 프로필 정보 가져오기
-    const fetchUserProfile = async () => {
-      try {
-        const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
-        const response = await fetch(`${API_URL}/api/auth/me`, {
-          credentials: 'include' // 쿠키 포함
-        });
-        
-        if (response.ok) {
-          const result = await response.json();
-          console.log('API 응답:', result); // 디버깅용
-          if (result.success && result.data) {
-            setUserProfile({
-              nickname: result.data.nickname,
-              email: result.data.email,
-              profileImage: result.data.profileImage || 'https://via.placeholder.com/80'
-            });
-          }
-        } else {
-          console.error('프로필 로드 실패:', response.status);
-        }
-      } catch (error) {
-        console.error('프로필 로드 실패:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchUserProfile();
-  }, []);
 
   return (
     <div className="space-y-8">
@@ -63,19 +35,10 @@ const HomePage: React.FC<HomePageProps> = ({
         <div className="flex flex-col sm:flex-row items-center gap-6">
           {/* 사용자 정보 */}
           <div className="flex-1 text-center sm:text-left">
-            {loading ? (
-              <>
-                <div className="h-7 w-32 bg-white/50 rounded animate-pulse mb-2"></div>
-                <div className="h-5 w-48 bg-white/50 rounded animate-pulse"></div>
-              </>
-            ) : (
-              <>
-                <h2 className="text-2xl font-bold text-gray-900 mb-1">
-                  {userProfile?.nickname}님, 환영합니다! 👋
-                </h2>
-                <p className="text-gray-700">{userProfile?.email || ''}</p>
-              </>
-            )}
+            <h2 className="text-2xl font-bold text-gray-900 mb-1">
+              {userProfile?.nickname}님, 환영합니다! 👋
+            </h2>
+            <p className="text-gray-700">{userProfile?.email || ''}</p>
           </div>
 
           {/* 간단한 통계 */}
