@@ -16,12 +16,11 @@ const Navigation: React.FC<NavigationProps> = ({ selectedMenu, setSelectedMenu, 
         <div className="flex justify-between items-center h-20">
           {/* 로고 */}
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center shadow-md">
-              <i className="fas fa-book-open text-white text-lg"></i>
-            </div>
-            <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-              PageByFeel
-            </span>
+            <img 
+              src="/pagebyfeel_logo.png" 
+              alt="PageByFeel Logo" 
+              className="h-12 w-auto object-contain"
+            />
           </div>
           
           {/* 데스크톱 메뉴 */}
@@ -32,8 +31,8 @@ const Navigation: React.FC<NavigationProps> = ({ selectedMenu, setSelectedMenu, 
                 onClick={() => setSelectedMenu(item.id)}
                 className={`px-5 py-2.5 rounded-xl font-medium transition-all duration-200 inline-flex items-center gap-2 ${
                   selectedMenu === item.id
-                    ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md'
-                    : 'text-gray-600 hover:bg-gray-100'
+                    ? 'bg-[#F0A04B] text-white shadow-md'
+                    : 'text-gray-700 hover:bg-[#FCE7C8]'
                 }`}
               >
                 <i className={`fas ${item.icon} text-sm`}></i>
@@ -76,8 +75,8 @@ const Navigation: React.FC<NavigationProps> = ({ selectedMenu, setSelectedMenu, 
                 }}
                 className={`w-full px-5 py-3 rounded-xl font-medium transition-all duration-200 flex items-center gap-3 ${
                   selectedMenu === item.id
-                    ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md'
-                    : 'text-gray-600 hover:bg-gray-100'
+                    ? 'bg-[#F0A04B] text-white shadow-md'
+                    : 'text-gray-700 hover:bg-[#FCE7C8]'
                 }`}
               >
                 <i className={`fas ${item.icon} text-base`}></i>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import EmotionChart from '../components/EmotionChart';
 import EmotionSelector from '../components/EmotionSelector';
 
@@ -9,15 +9,88 @@ interface HomePageProps {
   setSelectedEmotion: (emotion: string) => void;
 }
 
+interface UserProfile {
+  nickname: string;
+  email: string;
+  profileImage: string;
+}
+
 const HomePage: React.FC<HomePageProps> = ({
   bookmarkInput,
   setBookmarkInput,
   selectedEmotion,
   setSelectedEmotion
 }) => {
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // 사용자 프로필 정보 가져오기
+    const fetchUserProfile = async () => {
+      try {
+        const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+        const response = await fetch(`${API_URL}/api/auth/me`, {
+          credentials: 'include' // 쿠키 포함
+        });
+        
+        if (response.ok) {
+          const result = await response.json();
+          console.log('API 응답:', result); // 디버깅용
+          if (result.success && result.data) {
+            setUserProfile({
+              nickname: result.data.nickname,
+              email: result.data.email,
+              profileImage: result.data.profileImage || 'https://via.placeholder.com/80'
+            });
+          }
+        } else {
+          console.error('프로필 로드 실패:', response.status);
+        }
+      } catch (error) {
+        console.error('프로필 로드 실패:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserProfile();
+  }, []);
+
   return (
     <div className="space-y-8">
+      {/* 사용자 프로필 헤더 */}
+      <div className="bg-[#FADA7A] rounded-2xl shadow-sm p-6 sm:p-8">
+        <div className="flex flex-col sm:flex-row items-center gap-6">
+          {/* 사용자 정보 */}
+          <div className="flex-1 text-center sm:text-left">
+            {loading ? (
+              <>
+                <div className="h-7 w-32 bg-white/50 rounded animate-pulse mb-2"></div>
+                <div className="h-5 w-48 bg-white/50 rounded animate-pulse"></div>
+              </>
+            ) : (
+              <>
+                <h2 className="text-2xl font-bold text-gray-900 mb-1">
+                  {userProfile?.nickname}님, 환영합니다! 👋
+                </h2>
+                <p className="text-gray-700">{userProfile?.email || ''}</p>
+              </>
+            )}
+          </div>
 
+          {/* 간단한 통계 */}
+          <div className="flex gap-4">
+            <div className="bg-white rounded-xl px-6 py-4 text-center shadow-md">
+              <p className="text-sm text-gray-600 mb-1">총 독서일</p>
+              <p className="text-2xl font-bold text-[#F0A04B]">7일</p>
+            </div>
+            <div className="bg-white rounded-xl px-6 py-4 text-center shadow-md">
+              <p className="text-sm text-gray-600 mb-1">완독한 책</p>
+              <p className="text-2xl font-bold text-[#B1C29E]">2권</p>
+            </div>
+          </div>
+        </div>
+      </div>
       
       {/* 메인 컨텐츠 그리드 */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -86,7 +159,7 @@ const HomePage: React.FC<HomePageProps> = ({
               <span className="text-sm text-gray-500 whitespace-nowrap">현재 진행률:</span>
               <div className="flex items-center gap-3 flex-1 sm:flex-initial">
                 <div className="w-32 h-2.5 bg-gray-200 rounded-full overflow-hidden">
-                  <div className="w-1/3 h-full bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full"></div>
+                  <div className="w-1/3 h-full bg-[#F0A04B] rounded-full"></div>
                 </div>
                 <span className="text-sm font-semibold text-gray-700">3/10일</span>
               </div>
@@ -99,7 +172,7 @@ const HomePage: React.FC<HomePageProps> = ({
               <label className="block text-sm font-semibold text-gray-700 mb-3">📚 책 선택</label>
               <div className="relative">
                 <button
-                  className="w-full bg-gray-50 hover:bg-gray-100 border-2 border-gray-200 rounded-xl px-4 py-3.5 text-left flex items-center justify-between focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                  className="w-full bg-gray-50 hover:bg-gray-100 border-2 border-gray-200 rounded-xl px-4 py-3.5 text-left flex items-center justify-between focus:ring-2 focus:ring-[#F0A04B] focus:border-[#F0A04B] transition-all duration-200"
                   onClick={() => document.getElementById('bookDropdown')?.classList.toggle('hidden')}
                 >
                   <span className="flex items-center gap-3">
@@ -117,7 +190,7 @@ const HomePage: React.FC<HomePageProps> = ({
                     <input 
                       type="text" 
                       placeholder="책 검색..." 
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg mb-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" 
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg mb-2 focus:ring-2 focus:ring-[#F0A04B] focus:border-[#F0A04B]" 
                     />
                     <div className="max-h-48 overflow-y-auto">
                       {['작은 습관의 힘', '아주 작은 습관의 힘', '원씽', '몰입', '미라클모닝'].map((book, index) => (
@@ -146,11 +219,11 @@ const HomePage: React.FC<HomePageProps> = ({
                     min="1"
                     max="365"
                     defaultValue="10"
-                    className="w-full px-4 py-3.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                    className="w-full px-4 py-3.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-[#F0A04B] focus:border-[#F0A04B] transition-all duration-200"
                   />
                 </div>
                 <span className="text-gray-500 font-medium">일</span>
-                <button className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-6 py-3.5 rounded-xl font-medium shadow-md hover:shadow-lg transition-all duration-200">
+                <button className="bg-[#F0A04B] hover:bg-[#e08f3a] text-white px-6 py-3.5 rounded-xl font-medium shadow-md hover:shadow-lg transition-all duration-200">
                   설정
                 </button>
               </div>
@@ -165,7 +238,7 @@ const HomePage: React.FC<HomePageProps> = ({
           <div className="mb-8">
             <label className="block text-sm font-semibold text-gray-700 mb-3">✍️ 오늘 읽은 내용 요약</label>
             <textarea
-              className="w-full p-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 resize-none"
+              className="w-full p-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-[#F0A04B] focus:border-[#F0A04B] transition-all duration-200 resize-none"
               rows={5}
               placeholder="오늘 읽은 내용을 간략히 요약해보세요..."
             ></textarea>
@@ -177,12 +250,12 @@ const HomePage: React.FC<HomePageProps> = ({
             <div className="flex gap-2">
               <input
                 type="text"
-                className="flex-1 p-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                className="flex-1 p-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-[#F0A04B] focus:border-[#F0A04B] transition-all duration-200"
                 placeholder="인상 깊었던 문장을 기록하세요..."
                 value={bookmarkInput}
                 onChange={(e) => setBookmarkInput(e.target.value)}
               />
-              <button className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-6 rounded-xl font-medium shadow-md hover:shadow-lg transition-all duration-200 inline-flex items-center gap-2">
+              <button className="bg-[#F0A04B] hover:bg-[#e08f3a] text-white px-6 rounded-xl font-medium shadow-md hover:shadow-lg transition-all duration-200 inline-flex items-center gap-2">
                 <i className="fas fa-plus"></i> 추가
               </button>
             </div>
@@ -198,7 +271,7 @@ const HomePage: React.FC<HomePageProps> = ({
           
           {/* 저장 버튼 */}
           <div className="flex justify-end">
-            <button className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-8 py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-200 inline-flex items-center gap-3">
+            <button className="bg-[#B1C29E] hover:bg-[#9BB088] text-white px-8 py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-200 inline-flex items-center gap-3">
               <i className="fas fa-save"></i> 저장하기
             </button>
           </div>
@@ -208,31 +281,31 @@ const HomePage: React.FC<HomePageProps> = ({
         <div className="lg:col-span-3 bg-white rounded-2xl shadow-sm p-6 sm:p-8 hover:shadow-md transition-shadow duration-200">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
             <h3 className="text-xl font-bold text-gray-900">💡 오늘의 추천 문장</h3>
-            <button className="text-sm text-blue-600 hover:text-blue-800 font-medium transition-colors inline-flex items-center gap-2">
+            <button className="text-sm text-[#F0A04B] hover:text-[#F0A04B] font-medium transition-colors inline-flex items-center gap-2">
               <i className="fas fa-sync-alt"></i> 새로고침
             </button>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-6 hover:shadow-md transition-shadow duration-200">
+            <div className="bg-[#FCE7C8] rounded-xl p-6 hover:shadow-md transition-shadow duration-200">
               <p className="text-gray-700 leading-relaxed mb-4">
-                <i className="fas fa-quote-left text-purple-300 mr-2"></i>
+                <i className="fas fa-quote-left text-[#F0A04B] mr-2"></i>
                 당신이 하루에 읽는 한 페이지가 모여 당신의 인생을 바꿀 책이 됩니다. 꾸준함이 만드는 기적을 믿으세요.
-                <i className="fas fa-quote-right text-purple-300 ml-2"></i>
+                <i className="fas fa-quote-right text-[#F0A04B] ml-2"></i>
               </p>
               <div className="flex items-center gap-2">
-                <span className="bg-purple-100 text-purple-700 px-4 py-2 rounded-full text-sm font-medium inline-flex items-center gap-2">
+                <span className="bg-[#F0A04B] bg-opacity-20 text-[#F0A04B] px-4 py-2 rounded-full text-sm font-medium inline-flex items-center gap-2">
                   <i className="fas fa-lightbulb"></i> 영감
                 </span>
               </div>
             </div>
-            <div className="bg-gradient-to-br from-pink-50 to-rose-50 rounded-xl p-6 hover:shadow-md transition-shadow duration-200">
-              <p className="text-gray-700 leading-relaxed mb-4">
-                <i className="fas fa-quote-left text-pink-300 mr-2"></i>
+            <div className="bg-[#B1C29E] rounded-xl p-6 hover:shadow-md transition-shadow duration-200">
+              <p className="text-white leading-relaxed mb-4">
+                <i className="fas fa-quote-left text-white mr-2"></i>
                 우리는 모두 각자의 이야기를 쓰고 있습니다. 오늘 당신이 읽은 한 페이지는 내일의 당신을 만듭니다.
-                <i className="fas fa-quote-right text-pink-300 ml-2"></i>
+                <i className="fas fa-quote-right text-white ml-2"></i>
               </p>
               <div className="flex items-center gap-2">
-                <span className="bg-pink-100 text-pink-700 px-4 py-2 rounded-full text-sm font-medium inline-flex items-center gap-2">
+                <span className="bg-white bg-opacity-30 text-white px-4 py-2 rounded-full text-sm font-medium inline-flex items-center gap-2">
                   <i className="fas fa-heart"></i> 위로
                 </span>
               </div>
