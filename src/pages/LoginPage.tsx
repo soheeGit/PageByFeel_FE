@@ -114,8 +114,14 @@ const LoginPage: React.FC = () => {
 
       {/* 이용약관 모달 */}
       {showTermsModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[80vh] overflow-hidden">
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
+          onClick={() => setShowTermsModal(false)}
+        >
+          <div 
+            className="bg-white rounded-2xl max-w-2xl w-full max-h-[80vh] overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="p-6 border-b border-gray-200">
               <div className="flex justify-between items-center">
                 <h2 className="text-2xl font-bold text-gray-900">이용약관</h2>
@@ -197,8 +203,14 @@ const LoginPage: React.FC = () => {
 
       {/* 개인정보처리방침 모달 */}
       {showPrivacyModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[80vh] overflow-hidden">
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
+          onClick={() => setShowPrivacyModal(false)}
+        >
+          <div 
+            className="bg-white rounded-2xl max-w-2xl w-full max-h-[80vh] overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="p-6 border-b border-gray-200">
               <div className="flex justify-between items-center">
                 <h2 className="text-2xl font-bold text-gray-900">개인정보처리방침</h2>
