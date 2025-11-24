@@ -8,13 +8,19 @@ import DiaryPage from './pages/DiaryPage';
 import SettingsPage from './pages/SettingsPage';
 import LoginPage from './pages/LoginPage';
 
+interface UserProfile {
+  nickname: string;
+  email: string;
+  profileImage: string;
+}
+
 const App: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedMenu, setSelectedMenu] = useState('홈');
   const [bookmarkInput, setBookmarkInput] = useState('');
   const [selectedEmotion, setSelectedEmotion] = useState<string | null>(null);
-  const [userProfile, setUserProfile] = useState<any>(null);
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
 
   const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 
